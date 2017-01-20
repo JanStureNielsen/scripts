@@ -15,4 +15,7 @@ prefix, _ = os.path.splitext(filename)
 
 with zipfile.ZipFile(filename, 'w', zipfile.ZIP_DEFLATED) as outfile:
     for filename in filenames:
-        outfile.write(filename, os.path.join(prefix, filename))
+        try:
+            outfile.write(filename, os.path.join(prefix, filename))
+        except OSError as e:
+            sys.exit('error: {}: {}'.format(filename, e.strerror))
